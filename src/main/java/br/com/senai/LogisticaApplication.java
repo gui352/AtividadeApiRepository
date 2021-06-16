@@ -1,0 +1,17 @@
+package br.com.senai;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.Scanner;
+
+@SpringBootApplication
+public class LogisticaApplication {
+
+	public static void main(String[] args) {
+
+		SpringApplication.run(LogisticaApplication.class, args);
+
+	}
+
+}
