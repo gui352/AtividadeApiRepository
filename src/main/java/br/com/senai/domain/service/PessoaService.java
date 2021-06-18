@@ -52,17 +52,21 @@ public class PessoaService {
     }
 
     public ResponseEntity<PessoaModel> editar (Long pessoaId, Pessoa pessoa){
-
-        if(!pessoaRepository.existsById(pessoaId)) {
-            return ResponseEntity.notFound().build();
+        if(!pessoaRepository.existsById(pessoaId)){
+            throw new NegocioException("Pessoa inexistente");
         }
-
+        Pessoa pessoa1 = this.buscar(pessoaId);
+        if (!pessoa.getEmail().equals(pessoa1.getEmail())){
+            boolean emailValidation = pessoaRepository.findByEmail(pessoa.getEmail())
+                    .isPresent();
+            if(emailValidation){
+                throw new NegocioException("E-mail já está sendo utilizado");
+            }
+        }
         pessoa.setId(pessoaId);
         pessoa = pessoaRepository.save(pessoa);
 
-        PessoaModel pessoaModel = modelMapper.map(pessoa, PessoaModel.class);
-
-        return ResponseEntity.ok(pessoaModel);
+        return ResponseEntity.ok(pessoaAssembler.toModel(pessoa));
     }
 
     public ResponseEntity<PessoaModel> remover  (Long pessoaId){

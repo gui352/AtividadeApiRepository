@@ -13,7 +13,7 @@ public class EntregaInput {
 
     @Valid
     @NotNull
-    private ClienteInput pessoa;
+    private PessoaInput pessoa;
 
     @Valid
     @NotNull
