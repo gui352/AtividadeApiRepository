@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class ClienteInput {
 
-    private long id;
-
     private String nome;
 
     private String email;

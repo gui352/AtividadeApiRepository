@@ -3,6 +3,7 @@ package br.com.senai.api.controller;
 import br.com.senai.api.assembler.PessoaAssembler;
 import br.com.senai.api.model.PessoaModel;
 import br.com.senai.api.model.input.ClienteInput;
+import br.com.senai.api.model.input.PessoaInput;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.repository.PessoaRepository;
 import br.com.senai.domain.service.PessoaService;
@@ -48,8 +49,10 @@ public class PessoaController {
     }
 
     @PutMapping ("/editar/{pessoaId}")
-    public ResponseEntity<PessoaModel> editar (@Valid @PathVariable Long pessoaId, @RequestBody Pessoa pessoa){
-            return pessoaService.editar(pessoaId, pessoa);
+    public ResponseEntity<PessoaModel> editar (@Valid @PathVariable Long pessoaId,
+                                               @RequestBody ClienteInput clienteInput){
+        Pessoa pessoa = pessoaAssembler.toEntity(clienteInput);
+        return pessoaService.editar(pessoaId, pessoa);
     }
 
     @DeleteMapping("/remover/{pessoaId}")

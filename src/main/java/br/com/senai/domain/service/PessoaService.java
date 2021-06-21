@@ -2,6 +2,7 @@ package br.com.senai.domain.service;
 
 import br.com.senai.api.assembler.PessoaAssembler;
 import br.com.senai.api.model.PessoaModel;
+import br.com.senai.api.model.input.ClienteInput;
 import br.com.senai.domain.exception.NegocioException;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.repository.PessoaRepository;
