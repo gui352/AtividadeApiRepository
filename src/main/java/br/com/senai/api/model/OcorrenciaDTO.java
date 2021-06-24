@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Setter
 public class OcorrenciaDTO {
 
-    //aaa
-
     private Long id;
     private String descricao;
     private LocalDateTime dataRegistro;

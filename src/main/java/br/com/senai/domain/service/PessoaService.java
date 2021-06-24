@@ -4,6 +4,7 @@ import br.com.senai.api.assembler.PessoaAssembler;
 import br.com.senai.api.model.PessoaDTO;
 import br.com.senai.domain.exception.NegocioException;
 import br.com.senai.domain.model.Pessoa;
+import br.com.senai.domain.model.RoleUsuario;
 import br.com.senai.domain.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +20,7 @@ public class PessoaService {
 
     private PessoaRepository pessoaRepository;
     private PessoaAssembler pessoaAssembler;
-    private ModelMapper modelMapper;
+    private RoleUsuarioService roleUsuarioService;
 
     @Transactional
     public Pessoa cadastrar(Pessoa pessoa){
@@ -29,7 +30,12 @@ public class PessoaService {
 //            throw new NegocioException(
 //                    "Ja existe uma  pessoa com esse e-mail cadastrado.");
 //        }
-        return pessoaRepository.save(pessoa);
+        Pessoa novaPessoa = pessoaRepository.save(pessoa);
+        RoleUsuario novaRole = new RoleUsuario();
+        novaRole.setUsuarios_id(novaPessoa.getUsuario().getId());
+        novaRole.setRole_nome_role("ROLE_USER");
+        roleUsuarioService.cadastrar(novaRole);
+        return novaPessoa;
     }
 
     @Transactional

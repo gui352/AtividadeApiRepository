@@ -22,7 +22,7 @@ public class Pessoa {
     @NotNull(groups = ValidationGroups.ClienteId.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     long id;
+    Long id;
 
     @NotBlank
     @Size(max = 60)
