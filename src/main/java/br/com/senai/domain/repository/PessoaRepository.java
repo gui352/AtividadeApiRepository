@@ -10,11 +10,9 @@ import java.util.Optional;
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
-    // Interface que pesquisa uma linha no banco de dados
     List<Pessoa> findByNome(String nome);
 
     List<Pessoa> findByNomeContaining(String nome);
 
-    Optional<Pessoa> findByEmail(String email);
-
+    //Optional<Pessoa> findByEmail(String email);
 }

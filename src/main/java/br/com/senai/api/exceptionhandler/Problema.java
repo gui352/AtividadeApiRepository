@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class Problema {
+public class Problema  {
 
     private Integer status;
     private LocalDateTime dataHora;
@@ -20,10 +21,8 @@ public class Problema {
 
     @AllArgsConstructor
     @Getter
-    public static class Campo {
-        private String nome;
+    public static class Campo{
+        private String campo;
         private String mensagem;
-
     }
-
 }

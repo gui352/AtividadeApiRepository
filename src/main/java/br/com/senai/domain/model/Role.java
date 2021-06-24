@@ -12,16 +12,17 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Rule implements GrantedAuthority {
+public class Role implements GrantedAuthority {
 
     @Id
-    private String nomeRule;
+    private String nomeRole;
 
     @ManyToMany
     private List<Usuario> usuarios;
 
+
     @Override
     public String getAuthority() {
-        return this.nomeRule;
+        return this.nomeRole;
     }
 }

@@ -1,5 +1,6 @@
 package br.com.senai.domain.model;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,5 +26,4 @@ public class Destinatario {
 
     @Column(name = "destinatario_bairro")
     private String bairro;
-
 }

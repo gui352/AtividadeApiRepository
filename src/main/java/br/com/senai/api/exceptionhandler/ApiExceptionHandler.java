@@ -20,20 +20,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-// Controla as exceções, sempre vem pra cá quando cair em uma exception
-@ControllerAdvice
 @AllArgsConstructor
+@ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private MessageSource messageSource;
 
-    // tratativa generica
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         List<Problema.Campo> campos = new ArrayList<>();
-        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+        for (ObjectError error : ex.getBindingResult().getAllErrors()){
             String nome = ((FieldError) error).getField();
             String mensagem = messageSource.getMessage(error, LocaleContextHolder.getLocale());
 
@@ -51,29 +49,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest webRequest) {
+    public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST;
-
         Problema problema = new Problema();
-
         problema.setStatus(status.value());
         problema.setDataHora(LocalDateTime.now());
         problema.setTitulo(ex.getMessage());
-
-        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, webRequest);
-
+        return handleExceptionInternal(ex, problema, new HttpHeaders(),status,request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex, WebRequest request){
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex,
+                                                                       WebRequest request){
         HttpStatus status = HttpStatus.NOT_FOUND;
-
         Problema problema = new Problema();
         problema.setStatus(status.value());
         problema.setDataHora(LocalDateTime.now());
         problema.setTitulo(ex.getMessage());
-
-        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
-
+        return handleExceptionInternal(ex, problema, new HttpHeaders(),status,request);
     }
 }

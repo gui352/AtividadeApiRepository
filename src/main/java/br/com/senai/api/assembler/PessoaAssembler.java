@@ -1,13 +1,14 @@
 package br.com.senai.api.assembler;
 
-import br.com.senai.api.model.PessoaModel;
-import br.com.senai.api.model.input.ClienteInput;
+import br.com.senai.api.model.PessoaDTO;
+import br.com.senai.api.model.input.ClienteInputDTO;
+import br.com.senai.api.model.input.PessoaInputDTO;
 import br.com.senai.domain.model.Pessoa;
+import br.com.senai.domain.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,19 +17,24 @@ import java.util.stream.Collectors;
 public class PessoaAssembler {
 
     private ModelMapper modelMapper;
+    private PessoaRepository pessoaRepository;
 
-    public PessoaModel toModel(Pessoa pessoa){
-        return modelMapper.map(pessoa, PessoaModel.class);
+    public Pessoa toEntity(PessoaInputDTO pessoaInputDTO){
+        return modelMapper.map(pessoaInputDTO, Pessoa.class);
     }
 
-    public List<PessoaModel> toCollectionModel (List<Pessoa> pessoas){
+    public List<PessoaDTO> toCollectionModel(List<Pessoa> pessoas) {
         return pessoas.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
 
-    public Pessoa toEntity(@Valid ClienteInput pessoaInput){
-        return modelMapper.map(pessoaInput, Pessoa.class);
+    public PessoaDTO toModel(Pessoa pessoa){
+        return modelMapper.map(pessoa, PessoaDTO.class);
+    }
+
+    public Pessoa toEntity(ClienteInputDTO clienteInput) {
+        return modelMapper.map(clienteInput, Pessoa.class);
     }
 
 }

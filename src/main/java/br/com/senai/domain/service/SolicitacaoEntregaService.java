@@ -1,7 +1,7 @@
 package br.com.senai.domain.service;
 
 import br.com.senai.api.assembler.EntregaAssembler;
-import br.com.senai.api.model.EntregaModel;
+import br.com.senai.api.model.EntregaDTO;
 import br.com.senai.domain.model.Entrega;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.model.StatusEntrega;
@@ -21,24 +21,23 @@ public class SolicitacaoEntregaService {
     private EntregaRepository entregaRepository;
     private EntregaAssembler entregaAssembler;
 
-    public Entrega solicitar(Entrega entrega) {
+    public Entrega solicitar(Entrega entrega){
         Pessoa pessoa = pessoaService.buscar(entrega.getPessoa().getId());
         entrega.setPessoa(pessoa);
-
         entrega.setStatus(StatusEntrega.PENDENTE);
         entrega.setDataPedido(LocalDateTime.now());
-
         return entregaRepository.save(entrega);
     }
 
-    public List<EntregaModel> listar(){
-        return entregaAssembler.toCollectionModel(entregaRepository.findAll());
+    public List<EntregaDTO> listar(){
+
+        return entregaAssembler.toColletionModel(entregaRepository.findAll());
     }
 
-    public ResponseEntity<EntregaModel> buscar(Long entregaId){
+    public ResponseEntity<EntregaDTO> buscar(Long entregaId){
         return entregaRepository.findById(entregaId)
-               .map(entrega -> {
-                    return ResponseEntity.ok(entregaAssembler.toModel(entrega));
+                .map(entrega -> {
+             return ResponseEntity.ok(entregaAssembler.toModel(entrega));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -21,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "entregas")
 public class Entrega {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +30,6 @@ public class Entrega {
     @ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class)
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
     @Valid
@@ -41,7 +41,7 @@ public class Entrega {
     @NotNull
     private BigDecimal taxa;
 
-    @ManyToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
     private List<Ocorrencia> ocorrencias = new ArrayList<>();
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -51,12 +51,11 @@ public class Entrega {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime dataPedido;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime dataFinalizacao;
 
     public void finalizar() {
-        if(naoPodeSerFinalizada()){
-            throw new NegocioException("Entrega não pode ser finalizada.");
+        if (naoPodeSerFinalizada()){
+            throw new NegocioException("Entrega não pode ser finalizada");
         }
         setStatus(StatusEntrega.FINALIZADA);
         setDataFinalizacao(LocalDateTime.now());
@@ -69,16 +68,12 @@ public class Entrega {
     public boolean naoPodeSerFinalizada(){
         return !podeSerFinalizada();
     }
-
     public Ocorrencia adicionarOcorrencia(String descricao){
         Ocorrencia ocorrencia = new Ocorrencia();
-
         ocorrencia.setDescricao(descricao);
         ocorrencia.setDataRegistro(LocalDateTime.now());
         ocorrencia.setEntrega(this);
-
         this.getOcorrencias().add(ocorrencia);
-
         return ocorrencia;
     }
 }

@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
 @Setter
-public class OcorrenciaInput {
+@Getter
+public class OcorrenciaInputDTO {
 
     @NotBlank
     private String descricao;

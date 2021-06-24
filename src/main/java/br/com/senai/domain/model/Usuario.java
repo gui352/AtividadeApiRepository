@@ -2,6 +2,7 @@ package br.com.senai.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.Converters;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,8 +10,8 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @Entity
 public class Usuario implements UserDetails {
 
@@ -23,14 +24,14 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @ManyToMany
-    @JoinTable(name = "rule_usuarios", joinColumns = @JoinColumn(name = "usuarios_id",
-            referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "rule_nome_rule",
-            referencedColumnName = "nomeRule"))
-    private List<Rule> rules;
+    @JoinTable(name = "role_usuarios",
+            joinColumns = @JoinColumn(name = "usuarios_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_nome_role", referencedColumnName = "nomeRole"))
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return (Collection<? extends GrantedAuthority>) this.rules;
+        return (Collection<? extends GrantedAuthority>) this.roles;
     }
 
     @Override
