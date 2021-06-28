@@ -4,8 +4,10 @@ import br.com.senai.api.assembler.PessoaAssembler;
 import br.com.senai.api.model.PessoaDTO;
 import br.com.senai.api.model.input.PessoaInputDTO;
 import br.com.senai.domain.model.Pessoa;
+import br.com.senai.domain.model.RoleUsuario;
 import br.com.senai.domain.repository.PessoaRepository;
 import br.com.senai.domain.service.PessoaService;
+import br.com.senai.domain.service.RoleUsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +23,7 @@ public class PessoaController {
     private PessoaRepository pessoaRepository;
     private PessoaService pessoaService;
     private PessoaAssembler pessoaAssembler;
+    private RoleUsuarioService roleUsuarioService;
 
     @GetMapping
     public List<PessoaDTO> listar(){
@@ -48,6 +51,10 @@ public class PessoaController {
         novaPessoa.getUsuario().setSenha(new BCryptPasswordEncoder()
                 .encode(pessoaInputDTO.getUsuario().getSenha()));
         Pessoa pessoa = pessoaService.cadastrar(novaPessoa);
+        RoleUsuario novaRole = new RoleUsuario();
+        novaRole.setUsuarios_id(novaPessoa.getUsuario().getId());
+        novaRole.setRole_nome_role("ROLE_USER");
+        roleUsuarioService.cadastrar(novaRole);
 
         return pessoaAssembler.toModel(pessoa);
     }
