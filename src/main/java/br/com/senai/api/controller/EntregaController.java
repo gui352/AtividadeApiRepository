@@ -4,7 +4,7 @@ import br.com.senai.api.assembler.EntregaAssembler;
 import br.com.senai.api.model.EntregaDTO;
 import br.com.senai.api.model.input.EntregaInputDTO;
 import br.com.senai.domain.model.Entrega;
-import br.com.senai.domain.repository.EntregaRepository;
+import br.com.senai.domain.repository.EntregaRopository;
 import br.com.senai.domain.service.EntregaService;
 import br.com.senai.domain.service.SolicitacaoEntregaService;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class EntregaController {
 
     private SolicitacaoEntregaService solicitacaoEntregaService;
     private EntregaAssembler entregaAssembler;
-    private EntregaRepository entregaRepository;
+    private EntregaRopository entregaRopository;
     private EntregaService entregaService;
 
     @PostMapping("/solicitar")

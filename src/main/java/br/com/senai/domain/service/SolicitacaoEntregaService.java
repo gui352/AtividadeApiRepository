@@ -5,7 +5,7 @@ import br.com.senai.api.model.EntregaDTO;
 import br.com.senai.domain.model.Entrega;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.model.StatusEntrega;
-import br.com.senai.domain.repository.EntregaRepository;
+import br.com.senai.domain.repository.EntregaRopository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SolicitacaoEntregaService {
 
     private PessoaService pessoaService;
-    private EntregaRepository entregaRepository;
+    private EntregaRopository entregaRopository;
     private EntregaAssembler entregaAssembler;
 
     public Entrega solicitar(Entrega entrega){
@@ -26,16 +26,16 @@ public class SolicitacaoEntregaService {
         entrega.setPessoa(pessoa);
         entrega.setStatus(StatusEntrega.PENDENTE);
         entrega.setDataPedido(LocalDateTime.now());
-        return entregaRepository.save(entrega);
+        return entregaRopository.save(entrega);
     }
 
     public List<EntregaDTO> listar(){
 
-        return entregaAssembler.toColletionModel(entregaRepository.findAll());
+        return entregaAssembler.toColletionModel(entregaRopository.findAll());
     }
 
     public ResponseEntity<EntregaDTO> buscar(Long entregaId){
-        return entregaRepository.findById(entregaId)
+        return entregaRopository.findById(entregaId)
                 .map(entrega -> {
              return ResponseEntity.ok(entregaAssembler.toModel(entrega));
                 })

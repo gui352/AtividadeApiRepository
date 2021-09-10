@@ -1,13 +1,17 @@
 package br.com.senai.api.controller;
 
 import br.com.senai.api.assembler.PessoaAssembler;
+import br.com.senai.api.assembler.UsuarioAssembler;
 import br.com.senai.api.model.PessoaDTO;
+import br.com.senai.api.model.RoleUsuarioDTO;
+import br.com.senai.api.model.UsuarioDTO;
 import br.com.senai.api.model.input.PessoaInputDTO;
+import br.com.senai.api.model.input.UsuarioInputDOT;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.model.RoleUsuario;
+import br.com.senai.domain.model.Usuario;
 import br.com.senai.domain.repository.PessoaRepository;
 import br.com.senai.domain.service.PessoaService;
-import br.com.senai.domain.service.RoleUsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,11 +27,11 @@ public class PessoaController {
     private PessoaRepository pessoaRepository;
     private PessoaService pessoaService;
     private PessoaAssembler pessoaAssembler;
-    private RoleUsuarioService roleUsuarioService;
+    private UsuarioAssembler usuarioAssembler;
 
     @GetMapping
     public List<PessoaDTO> listar(){
-        return pessoaService.listar();
+        return pessoaAssembler.toCollectionModel(pessoaService.listar());
     }
 
     @GetMapping("/nome/{pessoaNome}")
@@ -51,11 +55,6 @@ public class PessoaController {
         novaPessoa.getUsuario().setSenha(new BCryptPasswordEncoder()
                 .encode(pessoaInputDTO.getUsuario().getSenha()));
         Pessoa pessoa = pessoaService.cadastrar(novaPessoa);
-        RoleUsuario novaRole = new RoleUsuario();
-        novaRole.setUsuarios_id(novaPessoa.getUsuario().getId());
-        novaRole.setRole_nome_role("ROLE_USER");
-        roleUsuarioService.cadastrar(novaRole);
-
         return pessoaAssembler.toModel(pessoa);
     }
 
@@ -67,7 +66,7 @@ public class PessoaController {
         return ResponseEntity.ok(pessoaAssembler.toModel(pessoa1));
     }
 
-    @DeleteMapping("/{pessoaId}")
+        @DeleteMapping("/{pessoaId}")
     public ResponseEntity<Pessoa> remover(@PathVariable Long pessoaId){
         if(!pessoaRepository.existsById(pessoaId)) {
             return ResponseEntity.notFound().build();
@@ -75,4 +74,22 @@ public class PessoaController {
         pessoaService.deletar(pessoaId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/usuario")
+    public PessoaDTO cadUsuario(@Valid @RequestBody UsuarioInputDOT usuarioInputDOT) {
+        Usuario usuario = usuarioAssembler.toEntity(usuarioInputDOT);
+        Pessoa newPessoa = new Pessoa();
+        newPessoa.setUsuario(usuario);
+        newPessoa.setNome("Teste");
+        newPessoa.setTelefone("(47)77777-7777");
+
+        newPessoa.getUsuario().setSenha(new BCryptPasswordEncoder()
+                .encode(usuarioInputDOT.getSenha()));
+
+        Pessoa pessoa = pessoaService.cadastrar(newPessoa);
+
+        return pessoaAssembler.toModel(pessoa);
+    }
+
+
 }

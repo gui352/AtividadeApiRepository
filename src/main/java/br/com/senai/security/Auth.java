@@ -1,8 +1,8 @@
 package br.com.senai.security;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class Auth {
-
-    final static String secret = "53809adfc44abdfbf1c6798e6d1e6522";
+    final static String secret = "4817fcfd50ebfd16e94db28a1b659584";
     final static int expiresIn = 120000;
-
 }

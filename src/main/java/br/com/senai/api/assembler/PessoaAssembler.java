@@ -1,6 +1,7 @@
 package br.com.senai.api.assembler;
 
 import br.com.senai.api.model.PessoaDTO;
+import br.com.senai.api.model.input.ClienteInputDTO;
 import br.com.senai.api.model.input.PessoaInputDTO;
 import br.com.senai.domain.model.Pessoa;
 import br.com.senai.domain.repository.PessoaRepository;
@@ -30,6 +31,10 @@ public class PessoaAssembler {
 
     public PessoaDTO toModel(Pessoa pessoa){
         return modelMapper.map(pessoa, PessoaDTO.class);
+    }
+
+    public Pessoa toEntity(ClienteInputDTO clienteInput) {
+        return modelMapper.map(clienteInput, Pessoa.class);
     }
 
 }

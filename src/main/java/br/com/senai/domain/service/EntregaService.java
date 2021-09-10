@@ -1,8 +1,9 @@
 package br.com.senai.domain.service;
 
 import br.com.senai.domain.exception.EntidadeNaoEncontradaException;
+import br.com.senai.domain.exception.NegocioException;
 import br.com.senai.domain.model.Entrega;
-import br.com.senai.domain.repository.EntregaRepository;
+import br.com.senai.domain.repository.EntregaRopository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,17 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class EntregaService {
 
-    private EntregaRepository entregaRepository;
+    private EntregaRopository entregaRopository;
 
     @Transactional
     public void finalizar(Long entregaId){
         Entrega entrega = buscaEntrega(entregaId);
         entrega.finalizar();
-        entregaRepository.save(entrega);
+        entregaRopository.save(entrega);
     }
 
     public Entrega buscaEntrega(Long entregaId){
-        return entregaRepository.findById(entregaId)
+        return entregaRopository.findById(entregaId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Entrega não encontrada"));
     }
 
